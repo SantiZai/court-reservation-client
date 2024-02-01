@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,9 +20,7 @@ const NavBar = () => {
         w-2/3 sm:w-full h-full sm:h-20
         absolute top-0 sm:sticky z-2
         grid grid-cols-1 grid-rows-2 place-items-center sm:grid sm:grid-rows-1 sm:grid-cols-2
-        ${
-          !isOpen ? "-right-2/3" : "right-0"
-        }
+        ${!isOpen ? "-right-2/3" : "right-0"}
         bg-slate-200 transition-all duration-500`}
       >
         <section className="px-6 py-2">
@@ -36,7 +35,14 @@ const NavBar = () => {
           </article>
         </section>
         <section className="px-6 py-2">
-          <ul className="h-full flex flex-col sm:flex-row gap-2 justify-end items-center">
+          {/* desk nav */}
+          <ul className="hidden sm:flex h-full gap-2 justify-end items-center">
+            <Button>Quiero el servicio!</Button>
+            <Button>Iniciar sesión</Button>
+          </ul>
+
+          {/* mobile nav */}
+          <ul className="sm:hidden h-full flex flex-col sm:flex-row gap-2 justify-end items-center">
             <li>
               <Link href="/">Inicio</Link>
             </li>
@@ -45,7 +51,7 @@ const NavBar = () => {
             </li>
             <li>
               {/* TODO: conditional render if the user is logged in */}
-              <Link href="/login">Iniciar sesión</Link>
+              <Button size="sm">Iniciar sesión</Button>
             </li>
           </ul>
         </section>
