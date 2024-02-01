@@ -9,7 +9,7 @@ const NavBar = () => {
   return (
     <>
       <button
-        className="sm:hidden absolute top-0 right-0 m-4"
+        className="z-10 sm:hidden absolute top-0 right-0 m-4"
         onClick={() => setIsOpen(!isOpen)}
       >
         toggle
@@ -17,7 +17,7 @@ const NavBar = () => {
       <nav
         className={`
         w-2/3 sm:w-full h-full sm:h-20
-        absolute top-0 right-0 sm:sticky -z-10
+        absolute top-0 sm:sticky z-2
         grid grid-cols-1 grid-rows-2 place-items-center sm:grid sm:grid-rows-1 sm:grid-cols-2
         ${
           !isOpen ? "-right-2/3" : "right-0"
@@ -36,7 +36,7 @@ const NavBar = () => {
           </article>
         </section>
         <section className="px-6 py-2">
-          <ul className="h-full flex gap-2 justify-end items-center">
+          <ul className="h-full flex flex-col sm:flex-row gap-2 justify-end items-center">
             <li>
               <Link href="/">Inicio</Link>
             </li>
@@ -44,6 +44,7 @@ const NavBar = () => {
               <Link href="/contact">Contacto</Link>
             </li>
             <li>
+              {/* TODO: conditional render if the user is logged in */}
               <Link href="/login">Iniciar sesión</Link>
             </li>
           </ul>
