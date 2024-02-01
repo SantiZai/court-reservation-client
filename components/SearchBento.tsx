@@ -1,11 +1,14 @@
+"use client"
+
 import { Input } from "@/components/ui/input";
 import { Label } from "./ui/label";
 import BentoItem from "./BentoItem";
+import { Button } from "./ui/button";
 
 const SearchBento = (props: { class: string }) => {
   return (
     <form
-      action=""
+    onSubmit={(e) => e.preventDefault()}
       className={`${props.class} w-full max-w-[1400px]
         grid md:grid-cols-10 auto-rows-[14rem] gap-4
         mx-auto p-6 md:p-12 lg:p-20`}
@@ -91,6 +94,9 @@ const SearchBento = (props: { class: string }) => {
           />
         </div>
       </BentoItem>
+
+      {/* submit */}
+      <Button type="submit" size="lg" className="mx-auto">Buscar</Button>
     </form>
   );
 };
