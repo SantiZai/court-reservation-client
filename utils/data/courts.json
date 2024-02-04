@@ -1,0 +1,44 @@
+[
+  {
+    "id": "oahd9h78h38r",
+    "name": "Cancha 1",
+    "clubId": "klfa875289382mc2",
+    "surface": "Polvo de ladrillo",
+    "sport": "Tenis"
+  },
+  {
+    "id": "afsadf897",
+    "name": "Cancha 2",
+    "clubId": "klfa875289382mc2",
+    "surface": "Polvo de ladrillo",
+    "sport": "Tenis"
+  },
+  {
+    "id": "890709asdf",
+    "name": "Cancha 3",
+    "clubId": "klfa875289382mc2",
+    "surface": "Cemento",
+    "sport": "Tenis"
+  },
+  {
+    "id": "df8sd6f8",
+    "name": "Cancha 1",
+    "clubId": "dg8g28dgg82d",
+    "surface": "Polvo de ladrillo",
+    "sport": "Tenis"
+  },
+  {
+    "id": "01dihahd",
+    "name": "Cancha 2",
+    "clubId": "dg8g28dgg82d",
+    "surface": "Polvo de ladrillo",
+    "sport": "Tenis"
+  },
+  {
+    "id": "8sagd78ag",
+    "name": "Cancha 3",
+    "clubId": "dg8g28dgg82d",
+    "surface": "Polvo de ladrillo",
+    "sport": "Tenis"
+  }
+]

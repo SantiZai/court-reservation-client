@@ -1,14 +1,42 @@
-"use client"
+"use client";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "./ui/label";
 import BentoItem from "./BentoItem";
 import { Button } from "./ui/button";
+import Select from "react-select";
+import getClubs from "@/utils/data/clubs.json";
+import courts from "@/utils/data/courts.json";
+import { useEffect, useState } from "react";
+
+interface Club {
+  id: String;
+  name: String;
+  location: String;
+  sports: String[];
+}
 
 const SearchBento = (props: { class: string }) => {
+  
+  /**
+   * obtain an array of clubs and map the entries for use the data in the select box
+   * @returns an array of mapped clubs
+   */
+  const getMappedClubs = (): { value: string; label: string }[] => {
+    let mappedClubs: { value: string; label: string }[] = [];
+    getClubs.forEach((club) => {
+      const newClub: { value: string; label: string } = {
+        value: club.name.toLowerCase(),
+        label: club.name,
+      };
+      mappedClubs.push(newClub);
+    });
+    return mappedClubs;
+  };
+
   return (
     <form
-    onSubmit={(e) => e.preventDefault()}
+      onSubmit={(e) => e.preventDefault()}
       className={`${props.class} w-full max-w-[1400px]
         grid md:grid-cols-10 auto-rows-[14rem] gap-4
         mx-auto p-6 md:p-12 lg:p-20`}
@@ -82,7 +110,7 @@ const SearchBento = (props: { class: string }) => {
       {/* deporte */}
       {/* TODO: va a depender del club elegido */}
       <BentoItem class="md:col-span-3">
-        <div className="grid w-full max-w-sm items-center gap-1.5">
+        {/* <div className="grid w-full max-w-sm items-center gap-1.5">
           <datalist id="sports">
             <option value="Tenis"></option>
           </datalist>
@@ -92,11 +120,21 @@ const SearchBento = (props: { class: string }) => {
             list="sports"
             placeholder="Seleccione un deporte"
           />
-        </div>
+        </div> */}
+        <Select
+          name="club"
+          options={getMappedClubs()}
+        />
       </BentoItem>
 
       {/* submit */}
-      <Button type="submit" size="lg" className="mx-auto">Buscar</Button>
+      <Button
+        type="submit"
+        size="lg"
+        className="mx-auto"
+      >
+        Buscar
+      </Button>
     </form>
   );
 };

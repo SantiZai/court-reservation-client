@@ -1,0 +1,14 @@
+[
+    {
+        "id": "klfa875289382mc2",
+        "name": "Club Sports Salto",
+        "location": "Salto, Buenos Aires, Argentina",
+        "sports": ["Tenis", "Fútbol"]
+    },
+    {
+        "id": "dg8g28dgg82d",
+        "name": "Club Náutico Salto",
+        "location": "Salto, Buenos Aires, Argentina",
+        "sports": ["Tenis", "Fútbol", "Voleibol"]
+    }
+]
