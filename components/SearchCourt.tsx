@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -11,17 +11,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { cn } from "@/lib/utils";
-import { format, formatDistance, formatRelative, subDays } from "date-fns";
+import { format } from "date-fns";
 import { Calendar } from "./ui/calendar";
 import { es } from "date-fns/locale";
+import * as hours from "@/utils/functions/manipulateHours";
 
-const SearchCourts = (props: {class: string}) => {
+const SearchCourts = (props: { class: string }) => {
   const [date, setDate] = useState<Date>();
+  const [horasDisponibles, setHorasDisponibles] = useState<string[]>();
+
+  useEffect(() => {
+    setHorasDisponibles(hours.generateHours());
+  }, []);
 
   return (
-    <form onSubmit={(e) => e.preventDefault()} className={props.class}>
+    <form
+      onSubmit={(e) => e.preventDefault()}
+      className={props.class}
+    >
       <fieldset className="w-[200px]">
         <Label htmlFor="location">Ubicación</Label>
         <Input
@@ -46,22 +55,42 @@ const SearchCourts = (props: {class: string}) => {
         <Label>Selecciona el día</Label>
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant={"outline"} className={cn("w-full justify-start text-left font-normal px-3 py-2", !date && "text-muted-foreground")}>
-              {date ? format(date, "eee d 'de' MMMM 'de' y", {locale: es}) : <span>Selecciona una fecha</span>}
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-full justify-start text-left font-normal px-3 py-2",
+                !date && "text-muted-foreground"
+              )}
+            >
+              {date ? (
+                format(date, "eee d 'de' MMMM 'de' y", { locale: es })
+              ) : (
+                <span>Selecciona una fecha</span>
+              )}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0">
-            <Calendar mode="single" selected={date} onSelect={setDate} />
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+            />
           </PopoverContent>
         </Popover>
       </fieldset>
       <fieldset className="w-[200px]">
-        <Label htmlFor="location">Ubicación</Label>
-        <Input
-          id="location"
-          type="text"
-          placeholder="Buscar ciudad"
-        />
+        <Label>Elige un horario</Label>
+        <Select>
+          <SelectTrigger>
+            <SelectValue placeholder="Horario" />
+          </SelectTrigger>
+          <SelectContent>
+            {horasDisponibles &&
+              horasDisponibles.map((hour) => {
+                return <SelectItem value={hour}>{hour}</SelectItem>;
+              })}
+          </SelectContent>
+        </Select>
       </fieldset>
       <Button type="submit">Buscar</Button>
     </form>
