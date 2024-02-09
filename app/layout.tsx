@@ -17,7 +17,7 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="en">
-      <body className={`${inter.className}  touch-pan-y`}>
+      <body className={`${inter.className} touch-pan-y`}>
         <NavBar />
         {children}
       </body>
