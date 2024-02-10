@@ -10,5 +10,11 @@
         "name": "Club Náutico Salto",
         "location": "Salto, Buenos Aires, Argentina",
         "sports": ["Tenis", "Fútbol", "Voleibol"]
+    },
+    {
+        "id": "hasfafa",
+        "name": "Buenos Aires Lawn Tennis",
+        "location": "Capital Federal, Buenos Aires, Argentina",
+        "sports": ["Tenis"]
     }
 ]

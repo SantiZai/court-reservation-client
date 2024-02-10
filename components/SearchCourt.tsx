@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { Label } from "./ui/label";
 import {
   Select,
   SelectContent,
@@ -17,10 +16,67 @@ import { format } from "date-fns";
 import { Calendar } from "./ui/calendar";
 import { es } from "date-fns/locale";
 import * as hours from "@/utils/functions/manipulateHours";
+import { BaseItem, createAutocomplete } from "@algolia/autocomplete-core";
+import clubs from "../utils/data/clubs.json";
 
-const SearchCourts = () => {
+const AutocompleteItem = ({location}: {location: string}) => {
+  return (
+    <li>{location}</li>
+  )
+}
+
+const SearchCourts = (props: any) => {
   const [date, setDate] = useState<Date>();
   const [horasDisponibles, setHorasDisponibles] = useState<string[]>();
+  const [autocompleteState, setAutocompleteState] = useState<any>({
+    collections: [],
+    isOpen: false,
+  });
+
+  const autocomplete = useMemo(
+    () =>
+      createAutocomplete({
+        placeholder: "Buscar ciudad",
+        id: "location",
+        onStateChange: ({ state }) => setAutocompleteState(state),
+        getSources: () => [
+          {
+            sourceId: "cities-api",
+            getItems: ({ query }) => {
+              /* TODO: traer resultados de la base de datos */
+              /* if (!!query) {
+                    return fetch
+                }
+                return [] */
+                if(!!query) {
+                  const locations = clubs.map((club) => ({
+                    label: club.location,
+                  })) as BaseItem[];
+                  console.log(locations)
+                  const results = locations.filter((loc: any) => {
+                    return loc.label.toLowerCase().includes(query.toLowerCase())
+                  })
+                  return results
+                }
+            },
+          },
+        ],
+        ...props,
+      }),
+    [props]
+  );
+
+  const formRef = useRef(null);
+  const inputRef = useRef(null);
+  const panelRef = useRef(null);
+
+  const formProps = autocomplete.getFormProps({
+    inputElement: inputRef.current,
+  });
+
+  const inputProps = autocomplete.getInputProps({
+    inputElement: inputRef.current,
+  });
 
   useEffect(() => {
     setHorasDisponibles(hours.generateHours());
@@ -29,17 +85,39 @@ const SearchCourts = () => {
   return (
     <div className="max-w-xl lg:max-w-[70%] mx-auto rounded-2xl 2xl:rounded-full bg-white shadow-lg shadow-slate-800/40 pl-5 p-3">
       <form
-        onSubmit={(e) => e.preventDefault()}
         className="w-full flex 2xl:flex-row flex-col items-center justify-center gap-4 z-10"
+        ref={formRef}
+        {...formProps}
       >
         <div className="w-full 2xl:w-1/4">
           <fieldset className="w-full">
             <Input
-              id="location"
-              type="text"
-              placeholder="Buscar ciudad"
               className="rounded-none border-2 border-t-0 border-r-0 border-l-0 border-primary text-gray-500 focus-visible:ring-transparent"
+              ref={inputRef}
+              {...inputProps}
             />
+            {autocompleteState.isOpen && (
+              <div
+                ref={panelRef}
+                {...autocomplete.getPanelProps()}
+              >
+                {autocompleteState.collections.map((collection: any, i: number) => {
+                  const { items } = collection;
+                  console.log(items)
+                  return (
+                    <section key={`section-${i}`}>
+                      {items.length > 0 && (
+                        <ul {...autocomplete.getListProps()}>
+                          {
+                            items.map((item: any, i: number) => <AutocompleteItem key={i} {...item} />)
+                          }
+                        </ul>
+                      )}
+                    </section>
+                  )
+                })}
+              </div>
+            )}
           </fieldset>
         </div>
         <div className="w-full flex md:flex-row 2xl:w-3/4 flex-col gap-4">
@@ -93,7 +171,14 @@ const SearchCourts = () => {
                 <SelectContent>
                   {horasDisponibles &&
                     horasDisponibles.map((hour) => {
-                      return <SelectItem value={hour} className="focus-visible:ring-transparent">{hour}</SelectItem>;
+                      return (
+                        <SelectItem
+                          value={hour}
+                          className="focus-visible:ring-transparent"
+                        >
+                          {hour}
+                        </SelectItem>
+                      );
                     })}
                 </SelectContent>
               </Select>
