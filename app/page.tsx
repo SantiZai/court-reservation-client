@@ -7,7 +7,9 @@ const Home = () => {
     <main>
       <section
         className="w-full h-screen px-4 py-10 sm:py-6"
-        style={{ background: "url(/basquetHero.jpg) center / cover no-repeat" }}
+        style={{
+          background: "url(/basquetHero.jpg) center / cover no-repeat",
+        }}
       >
         <Header />
         <Presentation />
