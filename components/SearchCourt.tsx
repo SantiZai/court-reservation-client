@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import {
@@ -18,11 +18,27 @@ import { es } from "date-fns/locale";
 import * as hours from "@/utils/functions/manipulateHours";
 
 import clubs from "../utils/data/clubs.json";
-import SearchComponent from "./SearchComponent";
+import SearchAutocomplete from "./SearchAutocomplete";
+import { useRouter } from "next/navigation";
 
 const SearchCourts = (props: any) => {
+  const [location, setLocation] = useState<string>("")
+  const [sport, setSport] = useState<string>("")
   const [date, setDate] = useState<Date>();
+  const [hour, setHour] = useState<string>("")
   const [horasDisponibles, setHorasDisponibles] = useState<string[]>();
+
+  const router = useRouter();
+
+  //TODO: hacer q funcionen las queries URL?clave=valor;clave=valor
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const url = "/search";
+    const fecha = new Date(date as Date)
+    const fechaFormateada = `${fecha.getDate()},${fecha.toLocaleString("es-ES", {month: "long"})},${fecha.getFullYear()}`
+    console.log(fechaFormateada)
+    //router.push("/search")
+  };
 
   useEffect(() => {
     setHorasDisponibles(hours.generateHours());
@@ -30,13 +46,16 @@ const SearchCourts = (props: any) => {
 
   return (
     <div className="max-w-xl lg:max-w-[70%] mx-auto rounded-2xl 2xl:rounded-full bg-white shadow-lg shadow-slate-800/40 pl-5 p-3">
-      <form className="w-full flex 2xl:flex-row flex-col items-center justify-center gap-4 z-10">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full flex 2xl:flex-row flex-col items-center justify-center gap-4 z-10"
+      >
         <div className="w-full 2xl:w-1/4">
-          <SearchComponent data={clubs} />
+          <SearchAutocomplete data={clubs} setLocation={setLocation} />
         </div>
         <div className="w-full flex md:flex-row 2xl:w-3/4 flex-col gap-4">
           <fieldset className="w-full md:w-1/2 2xl:w-1/2">
-            <Select>
+            <Select name="sport" onValueChange={setSport}>
               <SelectTrigger className="rounded-none border-2 border-t-0 border-r-0 border-l-0 border-primary text-gray-500 hover:text-black focus-visible:ring-transparent">
                 <SelectValue placeholder="Deporte" />
               </SelectTrigger>
@@ -50,6 +69,7 @@ const SearchCourts = (props: any) => {
             <fieldset className="w-1/2 md:w-1/2 2xl:w-1/2">
               <Popover>
                 <PopoverTrigger
+                  name="date"
                   asChild
                   className="rounded-none border-2 border-t-0 border-r-0 border-l-0 border-primary"
                 >
@@ -78,7 +98,7 @@ const SearchCourts = (props: any) => {
             </fieldset>
 
             <fieldset className="w-1/2 md:w-1/2 2xl:w-1/2">
-              <Select>
+              <Select name="hour" onValueChange={setHour}>
                 <SelectTrigger className="rounded-none border-2 border-t-0 border-r-0 border-l-0 border-primary text-gray-500 hover:text-black focus-visible:ring-transparent">
                   <SelectValue placeholder="Horario" />
                 </SelectTrigger>

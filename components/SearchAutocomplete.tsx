@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Input } from "./ui/input";
 import { MdCancel } from "react-icons/md";
 
-const SearchComponent = (props: { data: {}[] }) => {
+const SearchAutocomplete = (props: { data: {}[], setLocation: Dispatch<SetStateAction<string>> }) => {
   const [data, setData] = useState<string[]>();
   const [filteredData, setFilteredData] = useState<string[]>();
   const [panelOpen, setPanelOpen] = useState<boolean>(false);
@@ -23,6 +23,7 @@ const SearchComponent = (props: { data: {}[] }) => {
       each.toLowerCase().includes(e.target.value.toLowerCase())
     );
     setFilteredData(filtered);
+    props.setLocation(e.target.value)
   };
 
   useEffect(() => {
@@ -33,12 +34,13 @@ const SearchComponent = (props: { data: {}[] }) => {
     <fieldset className="w-full">
       <div className="w-full flex items-center">
         <Input
+          name="location"
           ref={inputRef}
           onChange={handleChange}
           placeholder="Buscar ciudad"
           className="w-full rounded-none border-2 border-t-0 border-r-0 border-l-0 border-primary text-gray-500 focus-visible:ring-transparent"
         />
-        {inputRef.current && inputRef.current.value !== "" && (
+        {filteredData && (
           <MdCancel
             size={20}
             onClick={() => {
@@ -49,28 +51,29 @@ const SearchComponent = (props: { data: {}[] }) => {
           />
         )}
       </div>
-      <div className="w-full max-h-1 relative">
-        {filteredData && (
+      <div className="w-full max-h-1 relative z-[1000]">
+        {panelOpen && (
           <div
             className={`${
-              panelOpen ?? "absolute top-0 right-0 z-100"
+              panelOpen ?? "absolute top-0 right-0"
             } w-full bg-white overflow-y-auto rounded-b-lg`}
           >
             <ul className="p-4 flex flex-col gap-2 max-h-[10rem] overflow-y-auto">
-              {filteredData.map((location: string, i: number) => {
-                return (
-                  <li
-                    key={i}
-                    onClick={() => {
-                      inputRef.current.value = location;
-                      setFilteredData(undefined);
-                      setPanelOpen(false);
-                    }}
-                  >
-                    {location}
-                  </li>
-                );
-              })}
+              {filteredData &&
+                filteredData.map((location: string, i: number) => {
+                  return (
+                    <li
+                      key={i}
+                      onClick={() => {
+                        inputRef.current.value = location;
+                        setPanelOpen(false);
+                        props.setLocation(location)
+                      }}
+                    >
+                      {location}
+                    </li>
+                  );
+                })}
             </ul>
           </div>
         )}
@@ -79,4 +82,4 @@ const SearchComponent = (props: { data: {}[] }) => {
   );
 };
 
-export default SearchComponent;
+export default SearchAutocomplete;
