@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Input } from "./ui/input";
+import { MdCancel } from "react-icons/md";
 
 const SearchComponent = (props: { data: {}[] }) => {
   const [data, setData] = useState<string[]>();
   const [filteredData, setFilteredData] = useState<string[]>();
   const [panelOpen, setPanelOpen] = useState<boolean>(false);
+
+  const inputRef = useRef<any>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === "") {
@@ -15,34 +18,62 @@ const SearchComponent = (props: { data: {}[] }) => {
       return;
     }
     if (!data) return;
-    setPanelOpen(true)
+    setPanelOpen(true);
     const filtered = data.filter((each: string) =>
-      each.includes(e.target.value)
+      each.toLowerCase().includes(e.target.value.toLowerCase())
     );
     setFilteredData(filtered);
   };
 
   useEffect(() => {
-    setData(props.data.map((club: any) => club.location.toLowerCase()));
+    setData(props.data.map((club: any) => club.location));
   }, [props.data]);
 
   return (
     <fieldset className="w-full">
-      <Input
-        onChange={handleChange}
-        placeholder="Buscar ciudad"
-        className="rounded-none border-2 border-t-0 border-r-0 border-l-0 border-primary text-gray-500 focus-visible:ring-transparent"
-      />
+      <div className="w-full flex items-center">
+        <Input
+          ref={inputRef}
+          onChange={handleChange}
+          placeholder="Buscar ciudad"
+          className="w-full rounded-none border-2 border-t-0 border-r-0 border-l-0 border-primary text-gray-500 focus-visible:ring-transparent"
+        />
+        {inputRef.current && inputRef.current.value !== "" && (
+          <MdCancel
+            size={20}
+            onClick={() => {
+              inputRef.current.value = "";
+              setFilteredData(undefined);
+              setPanelOpen(false);
+            }}
+          />
+        )}
+      </div>
       <div className="w-full max-h-1 relative">
-      {filteredData && (
-        <div className={`${panelOpen ?? "absolute top-0 right-0 z-100"} w-full bg-white overflow-y-auto rounded-b-lg`}>
-          <ul className="p-4 flex flex-col gap-2 max-h-[10rem] overflow-y-auto">
-            {filteredData.map((location: string, i: number) => {
-              return <li key={i}>{location}</li>;
-            })}
-          </ul>
-        </div>
-      )}
+        {filteredData && (
+          <div
+            className={`${
+              panelOpen ?? "absolute top-0 right-0 z-100"
+            } w-full bg-white overflow-y-auto rounded-b-lg`}
+          >
+            <ul className="p-4 flex flex-col gap-2 max-h-[10rem] overflow-y-auto">
+              {filteredData.map((location: string, i: number) => {
+                return (
+                  <li
+                    key={i}
+                    onClick={() => {
+                      inputRef.current.value = location;
+                      setFilteredData(undefined);
+                      setPanelOpen(false);
+                    }}
+                  >
+                    {location}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
       </div>
     </fieldset>
   );
