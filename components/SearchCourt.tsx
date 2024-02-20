@@ -16,32 +16,41 @@ import { format } from "date-fns";
 import { Calendar } from "./ui/calendar";
 import { es } from "date-fns/locale";
 import * as hours from "@/utils/functions/manipulateHours";
-
-import clubs from "../utils/data/clubs.json";
 import SearchAutocomplete from "./SearchAutocomplete";
 import { useRouter } from "next/navigation";
+import { getClubs } from "@/utils/data/getData";
+import { Club } from "@/utils/data/models";
 
 const SearchCourts = (props: any) => {
-  const [location, setLocation] = useState<string>("")
-  const [sport, setSport] = useState<string>("")
+  const [clubs, setClubs] = useState<Club[]>([])
+  const [location, setLocation] = useState<string>("");
+  const [sport, setSport] = useState<string>("");
   const [date, setDate] = useState<Date>();
-  const [hour, setHour] = useState<string>("")
+  const [hour, setHour] = useState<string>("");
   const [horasDisponibles, setHorasDisponibles] = useState<string[]>();
 
   const router = useRouter();
 
-  //TODO: hacer q funcionen las queries URL?clave=valor;clave=valor
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const url = "/search";
-    const fecha = new Date(date as Date)
-    const fechaFormateada = `${fecha.getDate()},${fecha.toLocaleString("es-ES", {month: "long"})},${fecha.getFullYear()}`
-    console.log(fechaFormateada)
-    //router.push("/search")
+    if (location && sport && date && hour) {
+      const formattedDate = `${date.getDate()},${date.toLocaleString("es-ES", {
+        month: "long",
+      })},${date.getFullYear()}`;
+      const formattedLocation = location.split(",").map((part) => {
+        const formattedPart = part.trim().split(" ").join("-")
+        return formattedPart
+      }).join(",")
+      const queries = `?location=${formattedLocation}&sport=${sport}&date=${formattedDate}&hour${hour}`;
+      router.push(url + queries);
+    }
   };
 
   useEffect(() => {
     setHorasDisponibles(hours.generateHours());
+    //TODO: traer solo locations para el autocomplete
+    getClubs().then((data: Club[]) => setClubs(data))
   }, []);
 
   return (
@@ -51,17 +60,33 @@ const SearchCourts = (props: any) => {
         className="w-full flex 2xl:flex-row flex-col items-center justify-center gap-4 z-10"
       >
         <div className="w-full 2xl:w-1/4">
-          <SearchAutocomplete data={clubs} setLocation={setLocation} />
+          <SearchAutocomplete
+            data={clubs}
+            setLocation={setLocation}
+          />
         </div>
         <div className="w-full flex md:flex-row 2xl:w-3/4 flex-col gap-4">
           <fieldset className="w-full md:w-1/2 2xl:w-1/2">
-            <Select name="sport" onValueChange={setSport}>
-              <SelectTrigger className="rounded-none border-2 border-t-0 border-r-0 border-l-0 border-primary text-gray-500 hover:text-black focus-visible:ring-transparent">
+            <Select
+              name="sport"
+              onValueChange={setSport}
+            >
+              <SelectTrigger className="rounded-none border-2 border-t-0 border-r-0 border-l-0 border-primary text-gray-500 hover:text-black">
                 <SelectValue placeholder="Deporte" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="tenis">Tenis</SelectItem>
-                <SelectItem value="futbol">Fútbol</SelectItem>
+                <SelectItem
+                  value="tenis"
+                  className="cursor-pointer"
+                >
+                  Tenis
+                </SelectItem>
+                <SelectItem
+                  value="futbol"
+                  className="cursor-pointer"
+                >
+                  Fútbol
+                </SelectItem>
               </SelectContent>
             </Select>
           </fieldset>
@@ -98,8 +123,11 @@ const SearchCourts = (props: any) => {
             </fieldset>
 
             <fieldset className="w-1/2 md:w-1/2 2xl:w-1/2">
-              <Select name="hour" onValueChange={setHour}>
-                <SelectTrigger className="rounded-none border-2 border-t-0 border-r-0 border-l-0 border-primary text-gray-500 hover:text-black focus-visible:ring-transparent">
+              <Select
+                name="hour"
+                onValueChange={setHour}
+              >
+                <SelectTrigger className="rounded-none border-2 border-t-0 border-r-0 border-l-0 border-primary text-gray-500 hover:text-black">
                   <SelectValue placeholder="Horario" />
                 </SelectTrigger>
                 <SelectContent>
@@ -109,7 +137,7 @@ const SearchCourts = (props: any) => {
                         <SelectItem
                           key={i}
                           value={hour}
-                          className="focus-visible:ring-transparent"
+                          className="cursor-pointer"
                         >
                           {hour}
                         </SelectItem>

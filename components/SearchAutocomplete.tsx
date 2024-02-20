@@ -3,8 +3,9 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Input } from "./ui/input";
 import { MdCancel } from "react-icons/md";
+import { Club } from "@/utils/data/models";
 
-const SearchAutocomplete = (props: { data: {}[], setLocation: Dispatch<SetStateAction<string>> }) => {
+const SearchAutocomplete = (props: { data: Club[], setLocation: Dispatch<SetStateAction<string>> }) => {
   const [data, setData] = useState<string[]>();
   const [filteredData, setFilteredData] = useState<string[]>();
   const [panelOpen, setPanelOpen] = useState<boolean>(false);
@@ -38,7 +39,7 @@ const SearchAutocomplete = (props: { data: {}[], setLocation: Dispatch<SetStateA
           ref={inputRef}
           onChange={handleChange}
           placeholder="Buscar ciudad"
-          className="w-full rounded-none border-2 border-t-0 border-r-0 border-l-0 border-primary text-gray-500 focus-visible:ring-transparent"
+          className="w-full rounded-none border-2 border-t-0 border-r-0 border-l-0 border-primary text-gray-500 focus-visible:ring-transparent ring-offset-transparent hover:placeholder:text-black"
         />
         {filteredData && (
           <MdCancel
