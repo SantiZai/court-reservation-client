@@ -44,7 +44,7 @@ const SearchCourtsGrid = (props: { class: string }) => {
           return formattedPart;
         })
         .join(",");
-      const queries = `?location=${formattedLocation}&sport=${sport}&date=${formattedDate}&hour${hour}`;
+      const queries = `?location=${formattedLocation}&sport=${sport}&date=${formattedDate}&hour=${hour}`;
       router.push(url + queries);
     }
   };
@@ -58,7 +58,7 @@ const SearchCourtsGrid = (props: { class: string }) => {
     <div className={`${props.class} flex justify-center`}>
       <form
         onSubmit={handleSubmit}
-        className="w-full md:w-1/2 flex flex-col gap-4 bg-slate-200/80 p-6 rounded-lg"
+        className="w-full md:w-1/2 flex flex-col gap-4 bg-white/80 p-6 rounded-lg"
       >
         {/* LOCATION */}
         <div>
@@ -105,7 +105,7 @@ const SearchCourtsGrid = (props: { class: string }) => {
                   <Button
                     variant={"outline"}
                     className={cn(
-                      "w-full justify-start text-left font-normal px-3 py-2 hover:bg-inherit",
+                      "w-full justify-start text-left font-normal px-3 py-2 hover:bg-white",
                       !date && "text-gray-500"
                     )}
                   >
@@ -153,15 +153,12 @@ const SearchCourtsGrid = (props: { class: string }) => {
           </div>
         </div>
         {/* SUBMIT */}
-        <div className="col-span-10">
-
           <Button
             type="submit"
-            className="w-full 2xl:w-auto px-10 py-6 rounded-full"
+            className="w-full 2xl:w-auto py-4 rounded-full"
           >
             Buscar canchas
           </Button>
-        </div>
       </form>
     </div>
   );

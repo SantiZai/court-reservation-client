@@ -2,7 +2,6 @@
 
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Input } from "./ui/input";
-import { MdCancel } from "react-icons/md";
 import { Club } from "@/utils/data/models";
 
 const SearchAutocomplete = (props: { data: Club[], setLocation: Dispatch<SetStateAction<string>> }) => {
@@ -41,23 +40,13 @@ const SearchAutocomplete = (props: { data: Club[], setLocation: Dispatch<SetStat
           placeholder="Buscar ciudad"
           className="w-full rounded-none border-2 border-t-0 border-r-0 border-l-0 border-primary text-gray-500 focus-visible:ring-transparent ring-offset-transparent hover:placeholder:text-black"
         />
-        {/* {filteredData && (
-          <MdCancel
-            size={20}
-            onClick={() => {
-              inputRef.current.value = "";
-              setFilteredData(undefined);
-              setPanelOpen(false);
-            }}
-          />
-        )} */}
       </div>
       <div className="w-full max-h-1 relative z-[1000]">
         {panelOpen && (
           <div
             className={`${
               panelOpen ?? "absolute top-0 right-0"
-            } w-full bg-white/80 overflow-y-auto rounded-b-lg`}
+            } w-full bg-white overflow-y-auto rounded-b-lg`}
           >
             <ul className="p-4 flex flex-col gap-2 max-h-[10rem] overflow-y-auto">
               {filteredData &&
