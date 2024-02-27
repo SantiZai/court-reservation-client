@@ -5,6 +5,8 @@ import { useSearchParams } from "next/navigation";
 import HeaderMobile from "@/components/HeaderMobile";
 import HeaderWeb from "@/components/HeaderWeb";
 import { Button } from "@/components/ui/button";
+import { getFilteredClubs } from "@/utils/data/getData";
+import { Club } from "@/utils/data/models";
 
 const SearchPage = () => {
   const [location, setLocation] = useState<string>("");
@@ -12,13 +14,20 @@ const SearchPage = () => {
   const [date, setDate] = useState<string>("");
   const [hour, setHour] = useState<string>("");
 
+  const [filteredClubs, setFilteredClubs] = useState<Club[]>();
+
   const searchParams = useSearchParams();
 
   useEffect(() => {
     setLocation(String(searchParams.get("location")).split("-").join(" "));
-    setSport(searchParams.get("sport") as string);
+    setSport(searchParams.get("sport") as any);
     setDate(String(searchParams.get("date")).split(",").join(" de "));
     setHour(searchParams.get("hour") as string);
+
+    getFilteredClubs({
+      location: searchParams.get("location") as string,
+      sport: searchParams.get("sport") as string,
+    }).then((res: Club[]) => setFilteredClubs(res));
   }, [searchParams]);
 
   return (
@@ -39,6 +48,18 @@ const SearchPage = () => {
           </div>
         </section>
       </HeaderMobile>
+      <section>
+        {
+          filteredClubs && filteredClubs.map((club: Club) => {
+            return (
+              <article key={club.id} className="w-[90%] h-auto mx-auto p-4">
+                <p>{club.name}</p>
+                <p>{club.location}</p>
+              </article>
+            )
+          })
+        }
+      </section>
     </main>
   );
 };

@@ -23,7 +23,7 @@ import { es } from "date-fns/locale";
 const SearchCourtsGrid = (props: { class: string }) => {
   const [clubs, setClubs] = useState<Club[]>([]);
   const [location, setLocation] = useState<string>("");
-  const [sport, setSport] = useState<string>("");
+  const [sport, setSport] = useState<string>();
   const [date, setDate] = useState<Date>();
   const [hour, setHour] = useState<string>("");
   const [horasDisponibles, setHorasDisponibles] = useState<string[]>();
@@ -43,7 +43,7 @@ const SearchCourtsGrid = (props: { class: string }) => {
           const formattedPart = part.trim().split(" ").join("-");
           return formattedPart;
         })
-        .join(",");
+        .join(", ");
       const queries = `?location=${formattedLocation}&sport=${sport}&date=${formattedDate}&hour=${hour}`;
       router.push(url + queries);
     }
