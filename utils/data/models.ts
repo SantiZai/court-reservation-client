@@ -33,4 +33,14 @@ export interface Court {
   surface: SURFACES;
   clubId: string;
   sport: SPORTS;
+  reservations: Reservation[];
+}
+
+export interface Reservation {
+  id: string;
+  createdAt: string;
+  date: string;
+  hour: string;
+  courtId: string;
+  userId: string;
 }
