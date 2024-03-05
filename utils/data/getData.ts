@@ -5,6 +5,11 @@ export const getClubs = async () => {
   return result.json();
 };
 
+export const getClub = async (id: string) => {
+  const result = await fetch(`${API_BASE}clubs/${id}`);
+  return result.json();
+};
+
 export const getFilteredClubs = async (queries: {
   location: string;
   sport: string;
