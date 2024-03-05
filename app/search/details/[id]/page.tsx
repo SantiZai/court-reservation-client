@@ -4,6 +4,7 @@ import HeaderMobile from "@/components/HeaderMobile";
 import HeaderWeb from "@/components/HeaderWeb";
 import { getClub } from "@/utils/data/getData";
 import { Club, Court } from "@/utils/data/models";
+import { getDisponibility } from "@/utils/functions/manipulateHours";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -34,6 +35,15 @@ const DetailsPage = () => {
               return (
                 <div key={court.id}>
                   <p>{court.name}</p>
+                  <ul className="flex gap-2">
+                    {getDisponibility(court).map((hour: string) => {
+                      return (
+                        <li key={hour} className="text-sm py-1 px-2 rounded-lg bg-slate-300">
+                          {hour}
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
               );
             })}
