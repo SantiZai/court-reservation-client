@@ -1,9 +1,9 @@
 import { Court, Reservation } from "../data/models";
 
 const generateHours = (): string[] => {
-  const LIMIT: number = 24;
+  const LIMIT: number = 21;
   let hours: string[] = [];
-  for (let i = 0; i < LIMIT; i++) {
+  for (let i = 6; i < LIMIT; i++) {
     if (i < 10) {
       hours.push(`0${i}:00`);
       hours.push(`0${i}:30`);
@@ -17,7 +17,6 @@ const generateHours = (): string[] => {
 
 //TODO: block hours if the turn is large or short
 const getDisponibility = (court: Court): string[] => {
-  console.log(court.reservations)
   const allHours: string[] = generateHours();
   const blocked: string[] = court.reservations.map((res: Reservation) => res.hour);
   let notAvailable: string[] = [];
