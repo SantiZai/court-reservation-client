@@ -7,6 +7,7 @@ import HeaderWeb from "@/components/HeaderWeb";
 import { Button } from "@/components/ui/button";
 import { getFilteredClubs } from "@/utils/data/getData";
 import { Club } from "@/utils/data/models";
+import Link from "next/link";
 
 const SearchPage = () => {
   const [location, setLocation] = useState<string>("");
@@ -49,16 +50,20 @@ const SearchPage = () => {
         </section>
       </HeaderMobile>
       <section>
-        {
-          filteredClubs && filteredClubs.map((club: Club) => {
+        {filteredClubs &&
+          filteredClubs.map((club: Club) => {
             return (
-              <article key={club.id} className="w-[90%] h-auto mx-auto p-4">
-                <p>{club.name}</p>
-                <p>{club.location}</p>
+              <article
+                key={club.id}
+                className="w-[90%] h-auto mx-auto p-4"
+              >
+                <Link href={`search/details/${club.id}`}>
+                  <p>{club.name}</p>
+                  <p>{club.location}</p>
+                </Link>
               </article>
-            )
-          })
-        }
+            );
+          })}
       </section>
     </main>
   );
