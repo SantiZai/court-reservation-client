@@ -50,13 +50,13 @@ const SearchPage = () => {
           </div>
         </section>
       </HeaderMobile>
-      <section>
+      <section className="mt-4">
         {filteredClubs &&
           filteredClubs.map((club: Club) => {
             return (
               <article
                 key={club.id}
-                className="w-[90%] h-auto mx-auto p-4"
+                className="w-[90%] h-auto mx-auto p-4 rounded-lg cursor-pointer bg-slate-200 hover:bg-slate-300 transition-all"
               >
                 <Link href={`search/details/${club.id}`}>
                   <p>{club.name}</p>
