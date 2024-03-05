@@ -1,15 +1,34 @@
+import { Court, Reservation } from "../data/models";
+
 const generateHours = (): string[] => {
-  const LIMITE: number = 24;
-  let horas: string[] = [];
-  for (let i = 0; i <= LIMITE; i++) {
+  const LIMIT: number = 24;
+  let hours: string[] = [];
+  for (let i = 0; i < LIMIT; i++) {
     if (i < 10) {
-      horas.push(`0${i}:00`);
-      horas.push(`0${i}:30`);
+      hours.push(`0${i}:00`);
+      hours.push(`0${i}:30`);
     } else {
-      horas.push(`${i}:00`);
+      hours.push(`${i}:00`);
+      hours.push(`${i}:30`)
     }
   }
-  return horas;
+  return hours;
 };
 
-export { generateHours };
+//TODO: block hours if the turn is large or short
+const getDisponibility = (court: Court): string[] => {
+  console.log(court.reservations)
+  const allHours: string[] = generateHours();
+  const blocked: string[] = court.reservations.map((res: Reservation) => res.hour);
+  let notAvailable: string[] = [];
+  allHours.forEach((hour: string, i: number) => {
+    if (blocked.includes(hour)) {
+      notAvailable.push(hour);
+      notAvailable.push(allHours[i + 1]);
+      notAvailable.push(allHours[i - 1]);
+    }
+  });
+  return allHours.filter((hour) => !notAvailable.includes(hour));
+};
+
+export { generateHours, getDisponibility };
