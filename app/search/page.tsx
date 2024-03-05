@@ -22,7 +22,7 @@ const SearchPage = () => {
   useEffect(() => {
     setLocation(String(searchParams.get("location")).split("-").join(" "));
     setSport(searchParams.get("sport") as any);
-    setDate(String(searchParams.get("date")).split(",").join(" de "));
+    setDate(searchParams.get("date") as string);
     setHour(searchParams.get("hour") as string);
 
     getFilteredClubs({
@@ -44,6 +44,7 @@ const SearchPage = () => {
           </div>
           <div className="w-full flex justify-center items-center gap-4">
             <p>{sport}</p>
+            {/* TODO: fix and display date with month */}
             <p>{date}</p>
             <p>{hour}</p>
           </div>
