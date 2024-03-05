@@ -34,9 +34,9 @@ const SearchCourtsGrid = (props: { class: string }) => {
     e.preventDefault();
     const url = "/search";
     if (location && sport && date && hour) {
-      const formattedDate = `${date.getDate()},${date.toLocaleString("es-ES", {
-        month: "long",
-      })},${date.getFullYear()}`;
+      const formattedDate = `${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}/${
+        date.getMonth() < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
+      }/${date.getFullYear()}`;
       const formattedLocation = location
         .split(",")
         .map((part) => {
@@ -153,12 +153,12 @@ const SearchCourtsGrid = (props: { class: string }) => {
           </div>
         </div>
         {/* SUBMIT */}
-          <Button
-            type="submit"
-            className="w-full 2xl:w-auto py-4 rounded-full"
-          >
-            Buscar canchas
-          </Button>
+        <Button
+          type="submit"
+          className="w-full 2xl:w-auto py-4 rounded-full"
+        >
+          Buscar canchas
+        </Button>
       </form>
     </div>
   );
