@@ -7,6 +7,11 @@ import { Club, Court } from "@/utils/data/models";
 import { getDisponibility } from "@/utils/functions/manipulateHours";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 
 const DetailsPage = () => {
   const [club, setClub] = useState<Club>();
@@ -35,15 +40,26 @@ const DetailsPage = () => {
               return (
                 <div key={court.id}>
                   <p>{court.name}</p>
-                  <ul className="flex gap-4 overflow-hidden">
-                    {getDisponibility(court).map((hour: string) => {
-                      return (
-                        <li key={hour} className="text-sm py-1 px-2 rounded-lg bg-slate-300">
-                          {hour}
-                        </li>
-                      );
-                    })}
-                  </ul>
+                  <Carousel
+                    opts={{
+                      align: "start",
+                      dragFree: true
+                    }}
+                    className="w-full max-w-sm"
+                  >
+                    <CarouselContent className="mx-0">
+                      {getDisponibility(court).map((hour: string) => {
+                        return (
+                          <CarouselItem
+                            key={hour}
+                            className="basis-auto mx-2 rounded-lg bg-slate-300 px-3 py-1"
+                          >
+                            {hour}
+                          </CarouselItem>
+                        );
+                      })}
+                    </CarouselContent>
+                  </Carousel>
                 </div>
               );
             })}
