@@ -113,7 +113,9 @@ const DetailsPage = () => {
                               className="basis-auto mx-2 rounded-lg bg-slate-300 px-3 py-1"
                             >
                               <Link
-                                href={`${court.id}/create-reservation?date=${date}&hour=${hour}`}
+                                href={`../../new-reservation/${club.id}/${
+                                  court.id
+                                }?date=${date && formatDate(date)}&hour=${hour}`}
                               >
                                 {hour}
                               </Link>
