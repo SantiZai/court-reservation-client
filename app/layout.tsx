@@ -16,7 +16,9 @@ const RootLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+    >
       <body className={`${inter.className} touch-pan-y`}>
         <NavBar />
         {children}
