@@ -9,25 +9,43 @@ const generateHours = (): string[] => {
       hours.push(`0${i}:30`);
     } else {
       hours.push(`${i}:00`);
-      hours.push(`${i}:30`)
+      hours.push(`${i}:30`);
     }
   }
   return hours;
 };
 
 //TODO: block hours if the turn is large or short
-const getDisponibility = (court: Court): string[] => {
+const getDisponibility = (courts: Court[]): string[][] => {
   const allHours: string[] = generateHours();
-  const blocked: string[] = court.reservations.map((res: Reservation) => res.hour);
-  let notAvailable: string[] = [];
-  allHours.forEach((hour: string, i: number) => {
-    if (blocked.includes(hour)) {
-      notAvailable.push(hour);
-      notAvailable.push(allHours[i + 1]);
-      notAvailable.push(allHours[i - 1]);
-    }
+  const courtsAvailability: string[][] = [];
+
+  courts.forEach((court) => {
+    const availableHours: string[] = [...allHours];
+
+    const blocked = court.reservations.map((res) => res.hour);
+
+    blocked.forEach((hour) => {
+      const index = availableHours.indexOf(hour);
+
+      if (index !== -1) {
+        // Eliminar la hora reservada
+        availableHours.splice(index, 1);
+
+        // Eliminar la hora anterior
+        if (index >= 0) availableHours.splice(index, 1);
+
+        // Eliminar la hora posterior
+        // Como el index sigue igual y el array disminuyó hay que actualizar el index
+        if (index - 1 < availableHours.length)
+          availableHours.splice(index - 1, 1);
+      }
+    });
+
+    courtsAvailability.push(availableHours);
   });
-  return allHours.filter((hour) => !notAvailable.includes(hour));
+
+  return courtsAvailability;
 };
 
 export { generateHours, getDisponibility };
