@@ -15,7 +15,7 @@ import {
 import { getClubs } from "@/utils/data/getData";
 import { Club } from "@/utils/data/models";
 import { useRouter } from "next/navigation";
-import * as hours from "@/utils/functions/manipulateHours";
+import * as hours from "@/utils/functions/manipulateHoursAndDates";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -34,9 +34,7 @@ const SearchCourtsGrid = (props: { class: string }) => {
     e.preventDefault();
     const url = "/search";
     if (location && sport && date && hour) {
-      const formattedDate = `${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}/${
-        date.getMonth() < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
-      }/${date.getFullYear()}`;
+      const formattedDate = hours.formatDate(date);
       const formattedLocation = location
         .split(",")
         .map((part) => {
