@@ -4,7 +4,10 @@ import HeaderMobile from "@/components/HeaderMobile";
 import HeaderWeb from "@/components/HeaderWeb";
 import { getClub } from "@/utils/data/getData";
 import { Club, Court } from "@/utils/data/models";
-import { getDisponibility } from "@/utils/functions/manipulateHours";
+import {
+  formatDate,
+  getDisponibility,
+} from "@/utils/functions/manipulateHoursAndDates";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -37,7 +40,9 @@ const DetailsPage = () => {
 
   useEffect(() => {
     /* TODO: every change on date, refresh available hours */
-    club && setDisponibility(getDisponibility(club.courts));
+    club &&
+      date &&
+      setDisponibility(getDisponibility(club.courts, formatDate(date)));
   }, [date]);
 
   return (
