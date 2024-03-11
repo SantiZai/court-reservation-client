@@ -1,44 +1,71 @@
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "./ui/drawer";
+"use client";
+
+import { useState } from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
+import { Squash as Hamburger } from "hamburger-react";
 
 const NavBar = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   return (
-    <header className="sm:hidden absolute top-0">
-      <Drawer>
-        <DrawerTrigger>Toggle</DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader className="flex justify-center">
-            <Image
-              src="/next.svg"
-              alt="Logo de RTC"
-              width={80}
-              height={80}
-            />
-            {/* TODO: icono para tener un chat de preguntas frecuentes */}
-          </DrawerHeader>
-          <DrawerFooter className="text-center">
-            <Link href="#">Inicio</Link>
-            <Link href="#">Contactanos</Link>
-            <Link href="#">Quiero una demo</Link>
-            <Link href="#">Software para clubes</Link>
-            <DrawerClose>
-              <Button variant="ghost">⬇️</Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-    </header>
+    <nav className="sm:hidden fixed w-full">
+      <section className="absolute top-0 right-0 p-2 z-20">
+        <Hamburger
+          toggled={isOpen}
+          toggle={setIsOpen}
+        />
+      </section>
+      <section
+        className={`${
+          isOpen ? "right-0" : "-right-full"
+        } h-screen w-full absolute top-0 flex flex-col justify-between bg-slate-200/90 transition-all duration-500 p-4 touch-none`}
+      >
+        <div>
+          <Image
+            src="next.svg"
+            alt="Logo de Sale Partidito"
+            width={80}
+            height={80}
+          />
+        </div>
+        <div className="flex flex-col gap-4 text-xl">
+          <Link
+            href="/"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            Inicio
+          </Link>
+          <Link
+            href="/contact"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            Contactanos
+          </Link>
+          <Link
+            href=""
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            Software para clubes
+          </Link>
+          <Link
+            href=""
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            Quiero una demo
+          </Link>
+        </div>
+        <div>
+          <Button>
+            <Link href="login">Iniciar sesión</Link>
+          </Button>
+          <Button variant="ghost">
+            <Link href="register">Registrarse</Link>
+          </Button>
+        </div>
+      </section>
+    </nav>
   );
 };
 
