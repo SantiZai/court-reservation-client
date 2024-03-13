@@ -58,10 +58,10 @@ const NavBar = () => {
         </div>
         <div>
           <Button>
-            <Link href="login">Iniciar sesión</Link>
+            <Link href="/auth/login">Iniciar sesión</Link>
           </Button>
           <Button variant="ghost">
-            <Link href="register">Registrarse</Link>
+            <Link href="/auth/register">Registrarse</Link>
           </Button>
         </div>
       </section>

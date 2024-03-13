@@ -20,7 +20,6 @@ const Home = () => {
           <SearchCourtsGrid class="lg:col-span-6 sm:col-span-10 sm:row-span-1 h-full w-full" />
         </div>
       </section>
-      <section>asasas</section>
     </main>
   );
 };

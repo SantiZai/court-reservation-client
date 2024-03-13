@@ -36,7 +36,7 @@ const SearchPage = () => {
       <HeaderWeb>
         <section>web</section>
       </HeaderWeb>
-      <HeaderMobile class="flex flex-col py-4 border-b-2">
+      <HeaderMobile>
         <section>
           <div className="w-full flex items-center gap-4 p-4">
             <Button>{"<"}</Button>

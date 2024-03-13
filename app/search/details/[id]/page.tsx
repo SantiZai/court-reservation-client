@@ -50,7 +50,7 @@ const DetailsPage = () => {
       <HeaderWeb>
         <section>web</section>
       </HeaderWeb>
-      <HeaderMobile class="w-full pt-4 border-b-2">
+      <HeaderMobile>
         <section className="w-full flex items-center gap-4 p-4">logo</section>
       </HeaderMobile>
       {club && (
