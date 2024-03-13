@@ -5,9 +5,12 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { Squash as Hamburger } from "hamburger-react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const { user, error, isLoading } = useUser();
 
   return (
     <nav className="sm:hidden fixed w-full">
@@ -57,12 +60,22 @@ const NavBar = () => {
           </Link>
         </div>
         <div>
-          <Button>
-            <Link href="/auth/login">Iniciar sesión</Link>
-          </Button>
-          <Button variant="ghost">
-            <Link href="/auth/register">Registrarse</Link>
-          </Button>
+          {user ? (
+            <div className="flex items-center gap-4">
+              <Image
+                src={user.picture as string}
+                alt="User image"
+                width={50}
+                height={80}
+                className="rounded-full"
+              />
+              <p>{user.name}</p>
+            </div>
+          ) : (
+            <Button>
+              <Link href="/api/auth/login">Ingresar</Link>
+            </Button>
+          )}
         </div>
       </section>
     </nav>
