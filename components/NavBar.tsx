@@ -61,7 +61,8 @@ const NavBar = () => {
         </div>
         <div>
           {user ? (
-            <div className="flex items-center gap-4">
+            <div className="w-full flex justify-between items-center">
+              <section className="flex items-center gap-2">
               <Image
                 src={user.picture as string}
                 alt="User image"
@@ -70,6 +71,10 @@ const NavBar = () => {
                 className="rounded-full"
               />
               <p>{user.name}</p>
+              </section>
+              <Button variant="ghost">
+                <Link href="/api/auth/logout">Cerrar sesión</Link>
+              </Button>
             </div>
           ) : (
             <Button>
