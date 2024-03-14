@@ -52,11 +52,11 @@ export interface Reservation {
 }
 
 export interface User {
-  id: string;
-  createdAt: string;
+  id?: string;
+  createdAt?: string;
+  fullName: string;
   email: string;
-  fullname: string;
-  reservations: Reservation[];
-  userType: USER_TYPES;
+  reservations?: Reservation[];
+  userType?: USER_TYPES;
   club?: Club;
 }
