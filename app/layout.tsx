@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
+import { UserStoreProvider } from "@/components/providers/user/userStoreProvider";
 import NavBar from "@/components/NavBar";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,12 +19,14 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="es">
-      <UserProvider>
-        <body className={`${inter.className} touch-pan-y`}>
-          <NavBar />
-          {children}
-        </body>
-      </UserProvider>
+      <UserStoreProvider>
+        <UserProvider>
+          <body className={`${inter.className} touch-pan-y`}>
+            <NavBar />
+            {children}
+          </body>
+        </UserProvider>
+      </UserStoreProvider>
     </html>
   );
 };
