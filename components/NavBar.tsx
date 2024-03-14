@@ -9,11 +9,15 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import { createUser } from "@/utils/data/createData";
 import { getUserByEmail } from "@/utils/data/getData";
 import { User } from "@/utils/data/models";
+import { useUserStore } from "./providers/user/userStoreProvider";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { user, error, isLoading } = useUser();
+
+  const userStore = useUserStore((state) => state.user);
+  const setUserStore = useUserStore((state) => state.setUser);
 
   useEffect(() => {
     if (user && !isLoading) {
@@ -23,8 +27,11 @@ const NavBar = () => {
             fullName: user.name as string,
             email: user.email as string,
           };
-          createUser(newUser).then((res) => console.log(res));
+          createUser(newUser).finally(() =>
+            getUserByEmail(res.email).then((res) => setUserStore(res))
+          );
         }
+        setUserStore(res);
       });
     }
   }, [user, isLoading]);

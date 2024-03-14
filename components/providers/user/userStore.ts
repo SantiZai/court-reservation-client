@@ -1,22 +1,26 @@
+import { User } from "@/utils/data/models";
 import { createStore } from "zustand/vanilla";
 
 export type UserState = {
-  userId: string;
+  user: User;
 };
 
 export type UserActions = {
-  setUserId: () => void;
+  setUser: (user: User) => void;
 };
 
 export type UserStore = UserState & UserActions;
 
 export const defaultInitState: UserState = {
-  userId: "",
+  user: {
+    fullName: "",
+    email: "",
+  },
 };
 
 export const createUserStore = (initState: UserState = defaultInitState) => {
   return createStore<UserStore>()((set) => ({
     ...initState,
-    setUserId: () => set((state) => ({ userId: state.userId })),
+    setUser: (user: User) => set(() => ({ user })),
   }));
 };
