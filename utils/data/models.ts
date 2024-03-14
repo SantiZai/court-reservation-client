@@ -1,3 +1,9 @@
+export enum USER_TYPES {
+  superadmin,
+  admin,
+  user,
+}
+
 export enum SPORTS {
   tenis,
   futbol,
@@ -43,4 +49,14 @@ export interface Reservation {
   hour: string;
   courtId: string;
   userId: string;
+}
+
+export interface User {
+  id: string;
+  createdAt: string;
+  email: string;
+  fullname: string;
+  reservations: Reservation[];
+  userType: USER_TYPES;
+  club?: Club;
 }
