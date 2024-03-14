@@ -19,3 +19,9 @@ export const getFilteredClubs = async (queries: {
   );
   return result.json();
 };
+
+export const getUserByEmail = async (email: string) => {
+  const result = await fetch(`${API_BASE}users/${email}`);
+  if (result.status === 404) return false;
+  return result.json();
+};
