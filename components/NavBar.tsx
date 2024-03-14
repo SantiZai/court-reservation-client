@@ -1,16 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { Squash as Hamburger } from "hamburger-react";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { createUser } from "@/utils/data/createData";
+import { getUserByEmail } from "@/utils/data/getData";
+import { User } from "@/utils/data/models";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { user, error, isLoading } = useUser();
+
+  useEffect(() => {
+    if (user && !isLoading) {
+      getUserByEmail(user.email as string).then((res) => {
+        if (!res) {
+          const newUser: User = {
+            fullName: user.name as string,
+            email: user.email as string,
+          };
+          createUser(newUser).then((res) => console.log(res));
+        }
+      });
+    }
+  }, [user, isLoading]);
 
   return (
     <nav className="sm:hidden fixed w-full">
@@ -63,14 +80,14 @@ const NavBar = () => {
           {user ? (
             <div className="w-full flex justify-between items-center">
               <section className="flex items-center gap-2">
-              <Image
-                src={user.picture as string}
-                alt="User image"
-                width={50}
-                height={80}
-                className="rounded-full"
-              />
-              <p>{user.name}</p>
+                <Image
+                  src={user.picture as string}
+                  alt="User image"
+                  width={50}
+                  height={80}
+                  className="rounded-full"
+                />
+                <p>{user.name}</p>
               </section>
               <Button variant="ghost">
                 <Link href="/api/auth/logout">Cerrar sesión</Link>
